@@ -5,7 +5,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.LinearLayout.LayoutParams;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -14,32 +13,38 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        // get references to the View Pager and to the LinearLayout that will hold the indicators
         ViewPager imageSliderViewPager = (ViewPager) findViewById(R.id.image_slider_view_pager);
-        int[] imageResourceIds = {R.drawable.image1, R.drawable.image2};
-        ViewPagerAdapter myViewPagerAdapter = new ViewPagerAdapter(this, imageResourceIds);
+        final LinearLayout mCircularIndicatorsLayout = (LinearLayout) findViewById(R.id.circular_indicators_layout);
+
+        int[] imageResourceIds = {R.drawable.image1, R.drawable.image2, R.drawable.image3};
+        final ViewPagerAdapter myViewPagerAdapter = new ViewPagerAdapter(this, imageResourceIds, mCircularIndicatorsLayout);
         imageSliderViewPager.setAdapter(myViewPagerAdapter);
 
-        addIndicatorCircles(imageResourceIds.length);
+        imageSliderViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {}
+
+            @Override
+            public void onPageSelected(int position) {
+
+                for (int i = 0; i < myViewPagerAdapter.getCount(); i++) {
+                    ImageView circularIndicator = (ImageView) mCircularIndicatorsLayout.findViewById(i);
+                    if (i != position) {
+                        circularIndicator.setImageResource(R.drawable.ic_circle_off);
+                    } else {
+                        circularIndicator.setImageResource(R.drawable.ic_circle_on);
+                    }
+                }
+
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {}
+        });
     }
 
-    private void addIndicatorCircles(int numberIndicators) {
-        // get reference to the LinearLayout that will hold the indicators
-        LinearLayout circularIndicatorsLayout = (LinearLayout) findViewById(R.id.circular_indicators_layout);
 
-        // create the layout params
-        LayoutParams layoutParams = new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
-        // TODO: convert the arguments from pixels to dips
-        layoutParams.setMargins(10, 10, 10, 10);
-
-        for (int i = 0; i < numberIndicators; i++) {
-            // create image view and set its resource and params
-            ImageView imageView = new ImageView(this);
-            imageView.setImageResource(R.drawable.ic_circle);
-            imageView.setLayoutParams(layoutParams);
-
-            // add the ImageView to the linear layout
-            circularIndicatorsLayout.addView(imageView);
-        }
-    }
 
 }
