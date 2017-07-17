@@ -9,7 +9,9 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 /**
- * Created by bpmsilva on 17/07/17.
+ * This adapter holds the image resource IDs and the LinearLayout that holds the circular indicators.
+ * The ImageViews of the circular indicators are here created, but the logic of the image source
+ * change is create in the addOnPageChangeListener of the ViewPager
  */
 public class ViewPagerAdapter extends PagerAdapter {
 
@@ -28,13 +30,14 @@ public class ViewPagerAdapter extends PagerAdapter {
         // create the layout params
         LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         // TODO: convert the arguments from pixels to dips
-        layoutParams.setMargins(10, 10, 10, 10);
+        layoutParams.setMargins(10, 10, 10, 10); // THIS IS IN PIXELS! NOT IN DPS!
 
         for (int i = 0; i < numberIndicators; i++) {
             // create image view and set its resource and params
             ImageView imageView = new ImageView(mContext);
             imageView.setId(i);
             if (i == 0) {
+                // the image slider starts with the first image being selected
                 imageView.setImageResource(R.drawable.ic_circle_on);
             } else {
                 imageView.setImageResource(R.drawable.ic_circle_off);

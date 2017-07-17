@@ -13,7 +13,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        // get references to the View Pager and to the LinearLayout that will hold the indicators
+        // get references to the ViewPager and to the LinearLayout that will hold the indicators
         ViewPager imageSliderViewPager = (ViewPager) findViewById(R.id.image_slider_view_pager);
         final LinearLayout mCircularIndicatorsLayout = (LinearLayout) findViewById(R.id.circular_indicators_layout);
 
@@ -24,11 +24,9 @@ public class MainActivity extends AppCompatActivity {
         imageSliderViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
 
             @Override
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {}
-
-            @Override
             public void onPageSelected(int position) {
-
+                // set all circular indicators to be the off (not selected) indicator,
+                // except the one corresponding to the selected image
                 for (int i = 0; i < myViewPagerAdapter.getCount(); i++) {
                     ImageView circularIndicator = (ImageView) mCircularIndicatorsLayout.findViewById(i);
                     if (i != position) {
@@ -41,10 +39,11 @@ public class MainActivity extends AppCompatActivity {
             }
 
             @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {}
+
+            @Override
             public void onPageScrollStateChanged(int state) {}
         });
     }
-
-
 
 }
